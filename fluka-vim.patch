@@ -1,0 +1,63 @@
+diff -Naur old/filetype.vim vim61/filetype.vim
+--- old/filetype.vim	2002-12-23 23:02:46.000000000 +0100
++++ vim61/filetype.vim	2003-02-23 20:27:31.000000000 +0100
+@@ -41,23 +41,23 @@
+ au BufNewFile,BufRead *.inp			call FTCheck_inp()
+ 
+ fun! FTCheck_inp()
+-  if getline(1) =~ '^\*'
+-    setf abaqus
++  let n = 1
++  if line("$") > 500
++    let nmax = 500
+   else
+-    let n = 1
+-    if line("$") > 500
+-      let nmax = 500
+-    else
+-      let nmax = line("$")
+-    endif
+-    while n <= nmax
+-      if getline(n) =~? "^header surface data"
+-	setf trasys
+-	break
+-      endif
+-      let n = n + 1
+-    endwhile
++    let nmax = line("$")
+   endif
++  while n <= nmax
++    if getline(n) =~# "^TITLE"
++       setf fluka
++       break
++    elseif getline(n) =~? "^header surface data"
++       setf trasys
++       break
++    endif
++    let n = n + 1
++  endwhile
++  setf abaqus
+ endfun
+ 
+ " ABC music notation
+@@ -421,6 +421,9 @@
+ " Exports
+ au BufNewFile,BufRead exports			setf exports
+ 
++" FLuka
++au BufNewFile,BufRead *.fluka			setf fluka
++
+ " Focus Executable
+ au BufNewFile,BufRead *.fex,*.focexec		setf focexec
+ 
+diff -Naur old/synmenu.vim vim61/synmenu.vim
+--- synmenu.vim.orig	2003-02-12 13:44:34.000000000 +0100
++++ synmenu.vim	2003-08-12 11:24:04.000000000 +0200
+@@ -128,6 +128,7 @@
+ an 50.30.250 &Syntax.EFG.FORM :cal SetSyn("form")<CR>
+ an 50.30.260 &Syntax.EFG.Forth :cal SetSyn("forth")<CR>
+ an 50.30.270 &Syntax.EFG.Fortran :cal SetSyn("fortran")<CR>
++an 50.30.275 &Syntax.EFG.Fluka :cal SetSyn("fluka")<CR>
+ an 50.30.280 &Syntax.EFG.FoxPro :cal SetSyn("foxpro")<CR>
+ an 50.30.290 &Syntax.EFG.Fstab :cal SetSyn("fstab")<CR>
+ an 50.30.300 &Syntax.EFG.Fvwm.Fvwm\ configuration :cal SetSyn("fvwm1")<CR>
